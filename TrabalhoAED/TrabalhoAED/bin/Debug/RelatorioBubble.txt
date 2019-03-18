@@ -1,0 +1,4 @@
+Valor de i: 2000 - media tempo: 0,0393333333333333s
+Valor de i: 4000 - media tempo: 0,157s
+Valor de i: 8000 - media tempo: 0,600333333333333s
+Valor de i: 16000 - media tempo: 2,50966666666667s

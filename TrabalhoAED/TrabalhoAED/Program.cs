@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,7 +56,7 @@ namespace TrabalhoAED
             }
         }
 
-      static void MergeSort(Dados[] v,int inicio, int fim)
+        static void MergeSort(Dados[] v,int inicio, int fim)
 
         {
 
@@ -133,34 +135,90 @@ namespace TrabalhoAED
                 QuickSort(A, i, direita);
         }
 
+        static void LerArquivo(Dados[] v)
+        {
+            FileStream arq = new FileStream("dados_airbnb.csv", FileMode.Open);
+            StreamReader read = new StreamReader(arq);
+            read.ReadLine();
+            string linha;
+            string[] linhasplit;
+
+            for(int i = 0; i < v.Length; i++)
+            {
+                linha = read.ReadLine();
+                if (linha != null){
+                    linhasplit = linha.Split(';');
+                    v[i] = PreencheArq(linhasplit);
+                }
+            }
+            arq.Close();
+        }
+
+        static Dados PreencheArq(string[] linhasplit)
+        {
+            Dados x = new Dados();
+            x.room_id = int.Parse(linhasplit[0]);
+            x.host_id = int.Parse(linhasplit[1]);
+            x.room_type = linhasplit[2];
+            x.country = linhasplit[3];
+            x.city = linhasplit[4];
+            x.neighborhood = linhasplit[5];
+            x.reviews = int.Parse(linhasplit[6]);
+            x.overall_satisfaction = double.Parse(linhasplit[7]);
+            x.accommodates = int.Parse(linhasplit[8]);
+            x.bedrooms = double.Parse(linhasplit[9]);
+            x.price = double.Parse(linhasplit[10]);
+            x.property_type = linhasplit[11];
+            return x;
+        }
+
+        static void CalculaBubble()
+        {
+
+            FileStream arq = new FileStream("RelatorioBubble.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(arq);
+            Dados[] v;
+            List<double> time;
+
+            for (int i = 2000; i <= 16000; i *= 2)
+            {
+                time = new List<double>();
+                Console.WriteLine("\nValor de I: {0}",i);
+                for (int j = 0; j < 5; j++)
+                {
+                    v = new Dados[i];
+                    LerArquivo(v);
+
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Bubble(v);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+                    
+
+                }
+                double med = MediaTempo(time);
+                write.WriteLine("Valor de i: {0} - media tempo: {1}s", i, med);
+            }
+
+
+            write.Close();
+            arq.Close();
+
+        }
+
+        static double MediaTempo(List<double> time)
+        {
+            time.Sort();
+            return (time[1] + time[2] + time[3]) / 3;
+        }
 
         static void Main(string[] args)
         {
-            Dados x = new Dados();
-            x.room_id = 3;
-            Dados y = new Dados();
-            y.room_id = 4;
-            Dados z = new Dados();
-            z.room_id = 1;
-
-            Dados[] v = { x, y, z };
-
-
-            for (int i =  0; i < v.Length; i++)
-            {
-                Console.Write("{0} | ", v[i].room_id);
-            }
-
-            QuickSort(v, 0, v.Length - 1);
-
-            Console.WriteLine();
-
-            for (int i = 0; i < v.Length; i++)
-            {
-                Console.Write("{0} | ", v[i].room_id);
-            }
-
-            Console.ReadKey();
+            CalculaBubble();
         }
     }
 }
