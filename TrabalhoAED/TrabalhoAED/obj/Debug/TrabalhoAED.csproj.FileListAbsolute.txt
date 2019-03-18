@@ -5,3 +5,10 @@ C:\Projetos\Trabalho-Prático-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.
 C:\Projetos\Trabalho-Prático-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.csproj.CoreCompileInputs.cache
 C:\Projetos\Trabalho-Prático-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.exe
 C:\Projetos\Trabalho-Prático-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.pdb
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\bin\Debug\TrabalhoAED.exe.config
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\bin\Debug\TrabalhoAED.exe
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\bin\Debug\TrabalhoAED.pdb
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.csprojAssemblyReference.cache
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.csproj.CoreCompileInputs.cache
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.exe
+C:\Users\lucas\Desktop\Trabalho-Pratico-AED\TrabalhoAED\TrabalhoAED\obj\Debug\TrabalhoAED.pdb
