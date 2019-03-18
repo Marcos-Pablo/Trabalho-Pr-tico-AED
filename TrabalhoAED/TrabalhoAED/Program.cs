@@ -8,12 +8,12 @@ namespace TrabalhoAED
 {
     class Program
     {
-        static void Bubble(int[] v)
+        static void Bubble(List<Dados> v)
         {
-            int aux;
-            for(int i = 0; i < v.Length - 1; i++)
-                for (int j = 0; j < v.Length - i - 1; j++)
-                    if (v[j] > v[j + 1])
+            Dados aux;
+            for(int i = 0; i < v.Count - 1; i++)
+                for (int j = 0; j < v.Count - i - 1; j++)
+                    if (v[j].room_id > v[j + 1].room_id)
                     {
                         aux = v[j];
                         v[j] = v[j + 1];
@@ -21,32 +21,34 @@ namespace TrabalhoAED
                     }
         }
 
-        static void Selection(int[] v)
+        static void Selection(List<Dados> v)
         {
-            for(int i = 0; i < v.Length-1; i++)
+            for(int i = 0; i < v.Count-1; i++)
             {
                 int menor = i;
-                for (int j = i + 1; j < v.Length; j++)
-                    if (v[j] < v[menor])
+                for (int j = i + 1; j < v.Count; j++)
+                    if (v[j].room_id < v[menor].room_id)
                         menor = j;
-                int aux = v[menor];
+                Dados aux = v[menor];
                 v[menor] = v[i];
                 v[i] = aux;
             }
         }
 
-        static void Insertion(int[] v)
+        static void Insertion(List<Dados> v)
         {
-            int i, j, x;
-            for (i = 2; i <= v.Length; i++)
+            Dados x;
+            int j = 0;
+            for(int i = 1; i < v.Count; i++)
             {
                 x = v[i];
                 j = i - 1;
-                v[0] = x;
-                while (x < v[j])
+                while(x.room_id < v[j].room_id)
                 {
                     v[j + 1] = v[j];
                     j--;
+                    if (j < 0)
+                        break;
                 }
                 v[j + 1] = x;
             }
@@ -56,6 +58,31 @@ namespace TrabalhoAED
 
         static void Main(string[] args)
         {
+            Dados x = new Dados();
+            x.room_id = 3;
+            Dados y = new Dados();
+            y.room_id = 4;
+            Dados z = new Dados();
+            z.room_id = 1;
+
+            List<Dados> v = new List<Dados>();
+            v.Add(x);
+            v.Add(y);
+            v.Add(z);
+
+            for (int i =  0; i < v.Count; i++)
+            {
+                Console.Write("{0} | ", v[i].room_id);
+            }
+            Selection(v);
+            Console.WriteLine();
+
+            for (int i = 0; i < v.Count; i++)
+            {
+                Console.Write("{0} | ", v[i].room_id);
+            }
+
+            Console.ReadKey();
         }
     }
 }
