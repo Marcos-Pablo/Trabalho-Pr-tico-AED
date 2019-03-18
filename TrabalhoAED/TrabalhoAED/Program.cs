@@ -177,28 +177,30 @@ namespace TrabalhoAED
 
             FileStream arq = new FileStream("RelatorioBubble.txt", FileMode.OpenOrCreate);
             StreamWriter write = new StreamWriter(arq);
-            Dados[] v;
+
+            Dados[] A;
+           
             List<double> time;
 
             for (int i = 2000; i <= 16000; i *= 2)
             {
                 time = new List<double>();
                 Console.WriteLine("\nValor de I: {0}",i);
+
+                A = new Dados[i];
+                CriaClone(A, i);
+
                 for (int j = 0; j < 5; j++)
                 {
-                    v = new Dados[i];
-                    LerArquivo(v);
-
                     var watch = System.Diagnostics.Stopwatch.StartNew();
 
-                    Bubble(v);
+                    Bubble(A);
 
                     watch.Stop();
                     var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
                     time.Add(elapsedMs);
 
-                    
-
+                   
                 }
                 double med = MediaTempo(time);
                 write.WriteLine("Valor de i: {0} - media tempo: {1}s", i, med);
@@ -210,14 +212,39 @@ namespace TrabalhoAED
 
         }
 
+        static void CriaClone(Dados[] A, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                A[i] = v[i];
+            }
+        }
+
+        static void Inverte()
+        {
+            int j = 0;
+            for (int i = Cresc.Length - 1; i >= 0; i++)
+            {
+                Cresc[j] = Decrec[i];
+                j++;
+            }
+        }
+
         static double MediaTempo(List<double> time)
         {
             time.Sort();
             return (time[1] + time[2] + time[3]) / 3;
         }
 
+        static Dados[] v = new Dados[128000];
+        static Dados[] Cresc = new Dados[128000];
+        static Dados[] Decrec = new Dados[128000];
+
         static void Main(string[] args)
         {
+            LerArquivo(v);
+            QuickSort(Cresc, 0, Cresc.Length - 1);
+            Inverte();
             CalculaBubble();
         }
     }
