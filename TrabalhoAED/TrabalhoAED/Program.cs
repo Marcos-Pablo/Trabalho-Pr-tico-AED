@@ -10,67 +10,67 @@ namespace TrabalhoAED
 {
     class Program
     {
-        static void Bubble(Dados[] v)
+        static void Bubble(Dados[] A)
         {
             Dados aux;
-            for(int i = 0; i < v.Length - 1; i++)
-                for (int j = 0; j < v.Length - i - 1; j++)
-                    if (v[j].room_id > v[j + 1].room_id)
+            for(int i = 0; i < A.Length - 1; i++)
+                for (int j = 0; j < A.Length - i - 1; j++)
+                    if (A[j].room_id > A[j + 1].room_id)
                     {
-                        aux = v[j];
-                        v[j] = v[j + 1];
-                        v[j + 1] = aux;
+                        aux = A[j];
+                        A[j] = A[j + 1];
+                        A[j + 1] = aux;
                     }
         }
 
-        static void Selection(Dados[] v)
+        static void Selection(Dados[] A)
         {
-            for(int i = 0; i < v.Length-1; i++)
+            for(int i = 0; i < A.Length-1; i++)
             {
                 int menor = i;
-                for (int j = i + 1; j < v.Length; j++)
-                    if (v[j].room_id < v[menor].room_id)
+                for (int j = i + 1; j < A.Length; j++)
+                    if (A[j].room_id < A[menor].room_id)
                         menor = j;
-                Dados aux = v[menor];
-                v[menor] = v[i];
-                v[i] = aux;
+                Dados aux = A[menor];
+                A[menor] = A[i];
+                A[i] = aux;
             }
         }
 
-        static void Insertion(Dados[] v)
+        static void Insertion(Dados[] A)
         {
             Dados x;
             int j = 0;
-            for(int i = 1; i < v.Length; i++)
+            for(int i = 1; i < A.Length; i++)
             {
-                x = v[i];
+                x = A[i];
                 j = i - 1;
-                while(x.room_id < v[j].room_id)
+                while(x.room_id < A[j].room_id)
                 {
-                    v[j + 1] = v[j];
+                    A[j + 1] = A[j];
                     j--;
                     if (j < 0)
                         break;
                 }
-                v[j + 1] = x;
+                A[j + 1] = x;
             }
         }
 
-        static void MergeSort(Dados[] v,int inicio, int fim)
+        static void MergeSort(Dados[] A,int inicio, int fim)
 
         {
 
             if (inicio < fim)
             {
                 int meio = (inicio + fim) / 2;
-                MergeSort(v, inicio, meio);
-                MergeSort(v, meio + 1, fim);
-                Merge(v, inicio, meio, fim);
+                MergeSort(A, inicio, meio);
+                MergeSort(A, meio + 1, fim);
+                Merge(A, inicio, meio, fim);
             }
 
         }
 
-        static void Merge(Dados[] v, int inicio, int meio, int fim)
+        static void Merge(Dados[] A, int inicio, int meio, int fim)
         {
 
             int n1, n2, i, j, k;
@@ -81,9 +81,9 @@ namespace TrabalhoAED
             Dados[] A2 = new Dados[n2 + 1];
 
             for (i = 0; i < n1; i++)
-                A1[i] = v[inicio + i];
+                A1[i] = A[inicio + i];
             for (j = 0; j < n2; j++)
-                A2[j] = v[meio + j + 1];
+                A2[j] = A[meio + j + 1];
 
             A1[i] = new Dados();
             A1[i].room_id = int.MaxValue;
@@ -97,9 +97,9 @@ namespace TrabalhoAED
             for (k = inicio; k <= fim; k++)
             {
                 if (A1[i].room_id <= A2[j].room_id)
-                    v[k] = A1[i++];
+                    A[k] = A1[i++];
                 else
-                    v[k] = A2[j++];
+                    A[k] = A2[j++];
             }
         }
 
@@ -181,14 +181,16 @@ namespace TrabalhoAED
             Dados[] A;
            
             List<double> time;
+            write.WriteLine("Valor de I;Caso Médio;Melhor Caso;Pior Caso");
 
             for (int i = 2000; i <= 16000; i *= 2)
             {
                 time = new List<double>();
-                Console.WriteLine("\nValor de I: {0}",i);
+                
+                write.Write("{0};", i);
 
                 A = new Dados[i];
-                CriaClone(A, i);
+                CasoMed(A);
 
                 for (int j = 0; j < 5; j++)
                 {
@@ -203,7 +205,47 @@ namespace TrabalhoAED
                    
                 }
                 double med = MediaTempo(time);
-                write.WriteLine("Valor de i: {0} - media tempo: {1}s", i, med);
+                write.Write("{0};", Math.Round(med, 3));                
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                MelhorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Bubble(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                PiorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Bubble(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.WriteLine("{0}", Math.Round(med, 3));
             }
 
 
@@ -212,21 +254,36 @@ namespace TrabalhoAED
 
         }
 
-        static void CriaClone(Dados[] A, int n)
+        static void CasoMed(Dados[] A)
         {
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < A.Length; i++)
             {
                 A[i] = v[i];
+            }
+        }
+
+        static void MelhorCaso(Dados[] A)
+        {
+            for (int i = 0; i < A.Length; i++)
+            {
+                A[i] = Cresc[i];
+            }
+        }
+
+        static void PiorCaso(Dados[] A)
+        {
+            for(int i  =0; i < A.Length; i++)
+            {
+                A[i] = Dec[i];
             }
         }
 
         static void Inverte()
         {
             int j = 0;
-            for (int i = Cresc.Length - 1; i >= 0; i++)
+            for (int i = Cresc.Length - 1; i >= 0; i--, j++)
             {
-                Cresc[j] = Decrec[i];
-                j++;
+                Dec[j] = Cresc[i];
             }
         }
 
@@ -238,11 +295,12 @@ namespace TrabalhoAED
 
         static Dados[] v = new Dados[128000];
         static Dados[] Cresc = new Dados[128000];
-        static Dados[] Decrec = new Dados[128000];
+        static Dados[] Dec = new Dados[128000];
 
         static void Main(string[] args)
         {
             LerArquivo(v);
+            Cresc = v;
             QuickSort(Cresc, 0, Cresc.Length - 1);
             Inverte();
             CalculaBubble();
