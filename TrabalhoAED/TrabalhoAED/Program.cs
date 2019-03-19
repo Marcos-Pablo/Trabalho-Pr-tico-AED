@@ -254,6 +254,88 @@ namespace TrabalhoAED
 
         }
 
+        static void CalculaSelection()
+        {
+
+            FileStream arq = new FileStream("RelatorioSelection.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(arq);
+
+            Dados[] A;
+
+            List<double> time;
+            write.WriteLine("Valor de I;Caso Médio;Melhor Caso;Pior Caso");
+
+            for (int i = 2000; i <= 16000; i *= 2)
+            {
+                time = new List<double>();
+
+                write.Write("{0};", i);
+
+                A = new Dados[i];
+                CasoMed(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Selection(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                double med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                MelhorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Selection(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                PiorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Selection(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.WriteLine("{0}", Math.Round(med, 3));
+            }
+
+
+            write.Close();
+            arq.Close();
+
+        }
+
         static void CasoMed(Dados[] A)
         {
             for (int i = 0; i < A.Length; i++)
@@ -303,7 +385,7 @@ namespace TrabalhoAED
             Cresc = v;
             QuickSort(Cresc, 0, Cresc.Length - 1);
             Inverte();
-            CalculaBubble();
+            CalculaSelection();
         }
     }
 }
