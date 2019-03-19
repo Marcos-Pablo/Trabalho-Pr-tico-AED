@@ -135,7 +135,7 @@ namespace TrabalhoAED
                 QuickSort(A, i, direita);
         }
 
-        static void LerArquivo(Dados[] v)
+        static void LerArquivo()
         {
             FileStream arq = new FileStream("dados_airbnb.csv", FileMode.Open);
             StreamReader read = new StreamReader(arq);
@@ -143,12 +143,12 @@ namespace TrabalhoAED
             string linha;
             string[] linhasplit;
 
-            for(int i = 0; i < v.Length; i++)
+            for(int i = 0; i < Medio.Length; i++)
             {
                 linha = read.ReadLine();
                 if (linha != null){
                     linhasplit = linha.Split(';');
-                    v[i] = PreencheArq(linhasplit);
+                    Medio[i] = PreencheArq(linhasplit);
                 }
             }
             arq.Close();
@@ -336,11 +336,257 @@ namespace TrabalhoAED
 
         }
 
+        static void CalculaInsertion()
+        {
+
+            FileStream arq = new FileStream("RelatorioInsertion.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(arq);
+
+            Dados[] A;
+
+            List<double> time;
+            write.WriteLine("Valor de I;Caso Médio;Melhor Caso;Pior Caso");
+
+            for (int i = 2000; i <= 16000; i *= 2)
+            {
+                time = new List<double>();
+
+                write.Write("{0};", i);
+
+                A = new Dados[i];
+                CasoMed(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Insertion(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                double med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                MelhorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Insertion(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                PiorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    Insertion(A);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.WriteLine("{0}", Math.Round(med, 3));
+            }
+
+
+            write.Close();
+            arq.Close();
+
+        }
+
+        static void CalculaMerge()
+        {
+
+            FileStream arq = new FileStream("RelatorioMerge.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(arq);
+
+            Dados[] A;
+
+            List<double> time;
+            write.WriteLine("Valor de I;Caso Médio;Melhor Caso;Pior Caso");
+
+            for (int i = 2000; i <= 16000; i *= 2)
+            {
+                time = new List<double>();
+
+                write.Write("{0};", i);
+
+                A = new Dados[i];
+                CasoMed(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    MergeSort(A, 0, A.Length - 1);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                double med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                MelhorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    MergeSort(A, 0, A.Length - 1);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                PiorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    MergeSort(A, 0, A.Length - 1);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.WriteLine("{0}", Math.Round(med, 3));
+            }
+
+
+            write.Close();
+            arq.Close();
+
+        }
+
+        static void CalculaQuick()
+        {
+
+            FileStream arq = new FileStream("RelatorioQuick.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(arq);
+
+            Dados[] A;
+
+            List<double> time;
+            write.WriteLine("Valor de I;Caso Médio;Melhor Caso;Pior Caso");
+
+            for (int i = 2000; i <= 16000; i *= 2)
+            {
+                time = new List<double>();
+
+                write.Write("{0};", i);
+
+                A = new Dados[i];
+                CasoMed(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    QuickSort(A, 0, A.Length - 1);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                double med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                MelhorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    QuickSort(A, 0, A.Length - 1);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.Write("{0};", Math.Round(med, 3));
+
+                time = new List<double>();
+
+                A = new Dados[i];
+                PiorCaso(A);
+
+                for (int j = 0; j < 5; j++)
+                {
+                    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                    QuickSort(A, 0, A.Length - 1);
+
+                    watch.Stop();
+                    var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+                    time.Add(elapsedMs);
+
+
+                }
+                med = MediaTempo(time);
+                write.WriteLine("{0}", Math.Round(med, 3));
+            }
+
+
+            write.Close();
+            arq.Close();
+
+        }
+
         static void CasoMed(Dados[] A)
         {
             for (int i = 0; i < A.Length; i++)
             {
-                A[i] = v[i];
+                A[i] = Medio[i];
             }
         }
 
@@ -375,17 +621,41 @@ namespace TrabalhoAED
             return (time[1] + time[2] + time[3]) / 3;
         }
 
-        static Dados[] v = new Dados[128000];
+        static Dados[] Medio = new Dados[128000];
         static Dados[] Cresc = new Dados[128000];
         static Dados[] Dec = new Dados[128000];
 
         static void Main(string[] args)
         {
-            LerArquivo(v);
-            Cresc = v;
+            //coloca os dados do arquivo no vetor Medio
+            LerArquivo();
+            //vetor Cresc recebe caso medio que foi populado com as informações dos arquivos
+            Cresc = Medio;
+            //Ordena vetor Cresc em Crescente
             QuickSort(Cresc, 0, Cresc.Length - 1);
+            //Inverte inverter os números crescentes e colocara no vetor Dec
             Inverte();
+            //executa as ordenações
+            //tempo total gasto e memoria gasta
+            FileStream arq = new FileStream("RelatorioTotal.txt", FileMode.OpenOrCreate);
+            StreamWriter write = new StreamWriter(arq);
+
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            CalculaBubble();
             CalculaSelection();
+            CalculaInsertion();
+            CalculaMerge();
+            CalculaQuick();
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds / 1000.0;
+
+            write.WriteLine("Tempo total gasto => "+ elapsedMs);
+
+            write.Close();
+            arq.Close();
+
         }
     }
 }
